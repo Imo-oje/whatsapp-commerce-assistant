@@ -1,0 +1,58 @@
+{
+  "name": "my_store",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "prisma": {
+    "seed": "ts-node src/prisma/seed.ts"
+  },
+  "scripts": {
+    "dev": "direnv exec . ts-node-dev --files src/index.ts index.d.ts",
+    "build": "tsc && cp ./package.json ./dist",
+    "start": "node dist/index.js",
+    "prisma:generate": "npx prisma generate --schema=src/prisma/schema.prisma",
+    "prisma:migrate": "npx prisma migrate dev --schema=src/prisma/schema.prisma",
+    "postinstall": "npm run prisma:generate",
+    "prisma:migrate:deploy": "npx prisma migrate deploy --schema=src/prisma/schema.prisma",
+    "prisma:seed": "npx prisma db seed --schema=src/prisma/schema.prisma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Imo-oje/my_store.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Imo-oje/my_store/issues"
+  },
+  "homepage": "https://github.com/Imo-oje/my_store#readme",
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.15.12",
+    "@types/nodemailer": "^6.4.17",
+    "nodemon": "^3.1.9",
+    "prisma": "^6.5.0",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0",
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "resend": "^4.2.0",
+    "zod": "^3.24.2"
+  }
+}
