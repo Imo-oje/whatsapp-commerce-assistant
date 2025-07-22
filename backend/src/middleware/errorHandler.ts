@@ -1,7 +1,11 @@
 import { ErrorRequestHandler } from "express";
 import AppError from "../utils/appError";
 import { ZodError } from "zod";
-import { INTERNAL_SERVER_ERROR } from "../constants/HttpStatusCode";
+import {
+  INTERNAL_SERVER_ERROR,
+  REQUEST_ENTITY_TOO_LARGE,
+} from "../constants/HttpStatusCode";
+import { PrismaClientValidationError } from "@prisma/client/runtime/library";
 
 export const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   console.log("ERROR: ", error);
@@ -12,6 +16,23 @@ export const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
       message,
       errorCode,
     });
+  }
+
+  if (
+    error.name === "PayloadTooLargeError" ||
+    error.type === "entity.too.large"
+  ) {
+    res.status(REQUEST_ENTITY_TOO_LARGE).json({
+      message: "Payload too large",
+      limit: error.limit,
+    });
+  }
+
+  if (error instanceof PrismaClientValidationError) {
+    const { message, name, stack } = error;
+    res
+      .status(INTERNAL_SERVER_ERROR)
+      .json({ message: "Client validation failed", name });
   }
 
   if (error instanceof ZodError) {

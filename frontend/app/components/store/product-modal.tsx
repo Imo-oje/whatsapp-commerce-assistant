@@ -10,10 +10,12 @@ import * as z from "zod";
 
 export default function ProductModal() {
   const [dragArea, setDragArea] = useState<{
-    images: string[];
+    images: File[];
+    previews: string[];
     highlight: boolean;
   }>({
     images: [],
+    previews: [],
     highlight: false,
   });
 
@@ -22,7 +24,7 @@ export default function ProductModal() {
     description: string;
     price: number;
     quantity: number;
-    images: string[];
+    images: File[];
   }
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -64,7 +66,8 @@ export default function ProductModal() {
         if (typeof reader.result === "string") {
           setDragArea((prev) => ({
             ...prev,
-            images: [...prev.images, reader.result as string],
+            images: [...prev.images, file],
+            previews: [...prev.previews, reader.result as string],
           }));
         }
       };
@@ -88,7 +91,7 @@ export default function ProductModal() {
     description: z.string(),
     price: z.coerce.number(),
     images: z
-      .array(z.string())
+      .array(z.instanceof(File))
       .min(1, { message: "At least one image is required" }),
     quantity: z.coerce.number(),
   });
@@ -104,14 +107,20 @@ export default function ProductModal() {
   });
   setValue("images", dragArea.images);
 
-  const onSubmit: SubmitHandler<CreateProduct> = (data) =>
-    mutCreateProduct({
-      ...data,
-      images: dragArea.images,
-    });
+  const onSubmit: SubmitHandler<CreateProduct> = (data) => {
+    const formData = new FormData();
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("price", data.price.toString());
+    formData.append("quantity", data.quantity.toString());
+
+    dragArea.images.forEach((image) => formData.append("images", image));
+    console.log("=============", formData);
+    return mutCreateProduct(formData);
+  };
 
   const { mutate: mutCreateProduct } = useMutation({
-    mutationFn: (data: CreateProduct) => API.post("/product", data),
+    mutationFn: (data: FormData) => API.post("/store/product", data, {}),
     onSuccess: () => {
       setDragArea((prevState) => ({
         ...prevState,
@@ -122,8 +131,7 @@ export default function ProductModal() {
     },
   });
 
-  console.log(errors);
-  console.log("Validating images:", dragArea.images);
+  //console.log(errors);
 
   return (
     <div
@@ -142,9 +150,9 @@ export default function ProductModal() {
             dragArea.highlight ? "bg-[#e9f5ff] border-[#0b5ed7] border-2" : ""
           }`}
         >
-          {dragArea.images.length > 0 ? (
+          {dragArea.previews.length > 0 ? (
             <div className="border w-full flex gap-2 overflow-x-auto p-2 rounded-md">
-              {dragArea.images.map((img, index) => (
+              {dragArea.previews.map((img, index) => (
                 <img
                   key={index}
                   src={img}

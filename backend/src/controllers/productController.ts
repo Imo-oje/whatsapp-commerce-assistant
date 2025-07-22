@@ -1,10 +1,4 @@
-import {
-  CREATED,
-  FORBIDDEN,
-  INTERNAL_SERVER_ERROR,
-  NOT_FOUND,
-  OK,
-} from "../constants/HttpStatusCode";
+import { NOT_FOUND, OK } from "../constants/HttpStatusCode";
 import prisma from "../db/client";
 import appAssert from "../utils/appAssert";
 import { asyncHandler } from "../utils/asyncFunctionHandler";

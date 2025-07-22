@@ -53,11 +53,11 @@ export const updateStoreSchema = z.object({
 export const createProductSchema = z.object({
   name: z.string(),
   description: z.string(),
-  price: z.number(),
-  images: z
-    .array(z.string().url())
-    .min(1, { message: "At least one image is required" }),
-  quantity: z.number(),
+  price: z.string(),
+  // images: z
+  //   .array(z.string().url())
+  //   .min(1, { message: "At least one image is required" }),
+  quantity: z.string(),
 });
 export const updateProductsSchema = createProductSchema.partial();
 

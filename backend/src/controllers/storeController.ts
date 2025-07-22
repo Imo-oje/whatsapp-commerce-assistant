@@ -83,13 +83,23 @@ export const getCatalog = asyncHandler(async (req, res) => {
 // product actions performed by store owners
 
 export const createProduct = asyncHandler(async (req, res) => {
-  const { name, description, images, price, quantity } =
-    createProductSchema.parse({ ...req.body });
+  const { name, description, price, quantity } = createProductSchema.parse({
+    ...req.body,
+  });
+
+  console.log(req.cloudinaryImages);
 
   const { store } = await getUserAndStore(req.userId);
 
   const product = await prisma.product.create({
-    data: { name, description, images, price, quantity, storeId: store.id },
+    data: {
+      name,
+      description,
+      images: req.cloudinaryImages?.map((e) => e.secure_url),
+      price: parseInt(price as string),
+      quantity: parseInt(quantity as string),
+      storeId: store.id,
+    },
   });
   appAssert(product, INTERNAL_SERVER_ERROR, "Could not create product");
 
@@ -119,8 +129,9 @@ export const getAllProducts = asyncHandler(async (req, res) => {
 
 export const updateProduct = asyncHandler(async (req, res) => {
   const { productId } = req.params;
-  const { description, images, name, price, quantity } =
-    updateProductsSchema.parse({ ...req.body });
+  const { description, name, price, quantity } = updateProductsSchema.parse({
+    ...req.body,
+  });
 
   const { store } = await getUserAndStore(req.userId);
   const product = (await getStoreProduct(store.id, productId)) as Product;
@@ -131,9 +142,9 @@ export const updateProduct = asyncHandler(async (req, res) => {
     data: {
       ...(name && { name }),
       ...(description && { description }),
-      ...(price !== undefined && { price }),
-      ...(quantity !== undefined && { quantity }),
-      ...(images && { images }),
+      ...(price !== undefined && { price: parseInt(price as string) }),
+      ...(quantity !== undefined && { quantity: parseInt(quantity as string) }),
+      // ...(images && { images }),
     },
   });
   res.status(200).json({ success: true, data: updatedProduct });
