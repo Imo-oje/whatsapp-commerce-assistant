@@ -9,11 +9,11 @@ export default function StoreNavBar({
   user: UserType;
   onMenuClick: MouseEventHandler<HTMLDivElement>;
 }) {
-  const openSideBar = () => {};
+  //const openSideBar = () => {};
 
   return (
     <>
-      <nav className="border px-2 rounded-sm flex justify-between items-center">
+      <nav className="bg-white px-2 flex justify-between items-center w-full">
         <select
           id="select-store"
           name="select-store"

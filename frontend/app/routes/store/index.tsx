@@ -25,7 +25,7 @@ export default function Index() {
 
   return (
     <>
-      <div className="h-screen flex gap-4">
+      <div className="h-screen flex gap-1 bg-gray-200">
         <StoreSideBar ref={sideBarRef} />
         <div className="w-full flex gap-4 flex-col">
           <StoreNavBar user={user} onMenuClick={handleOpenSideBar} />
