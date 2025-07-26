@@ -1,3 +1,3 @@
-export default function Messages() {
+export default function () {
   return <div>Messages</div>;
 }

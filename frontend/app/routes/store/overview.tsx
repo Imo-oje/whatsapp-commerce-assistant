@@ -7,8 +7,10 @@ import {
   ShoppingBasket,
   UsersRound,
 } from "lucide-react";
-import { Outlet, useOutletContext } from "react-router";
+import { useOutletContext } from "react-router";
+import Activities from "~/components/store/activities";
 import { LineChartView } from "~/components/store/charts";
+import RecentTransactions from "~/components/store/recent-transactions";
 import {
   Select,
   SelectContent,
@@ -17,16 +19,19 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import type { UserType } from "~/hooks/use-auth";
+import TopCaregories from "./top-categories";
+import Trending from "./trending";
 
 export default function Overview() {
   const user = useOutletContext<UserType>();
 
   return (
     <>
-      <main className="pl-2">
-        <div className="flex items-center justify-between">
-          <h2 className="font-bold py-4">Dashboard</h2>
-          <div className="flex items-center gap-4 px-4">
+      <main className="px-2 md:p-0">
+        {/* ===================== */}
+        <div className="flex items-center justify-between py-2">
+          <h2 className="font-bold text-lg">Dashboard</h2>
+          <div className="flex items-center gap-2">
             <button className="bg-white p-2 cursor-pointer rounded-lg flex items-center justify-center gap-1 text-xs font-semibold">
               <ListFilter size={14} />
               <span>Filter</span>
@@ -41,9 +46,10 @@ export default function Overview() {
             </button>
           </div>
         </div>
-        <div className="w-full flex flex-col lg:flex-row justify-between gap-4 lg:h-full pb-2">
-          <div className="lg:w-3/5 flex flex-col gap-4">
-            <div className="flex justify-between gap-2 md:overview-grid md:gap-4">
+        {/* ======================== */}
+        <div className="mt-2 lg:grid grid-cols-2 gap-2">
+          <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-2 gap-2 || md:grid-cols-4">
               <div className="bg-white p-2 rounded-lg w-full flex flex-col gap-2">
                 <h3 className="flex items-center gap-1 text-sm font-bold">
                   <span className="text-blue-900">
@@ -52,7 +58,7 @@ export default function Overview() {
                   Total Income
                 </h3>
 
-                <span className="inline-flex gap-1 text-xl">
+                <span className="inline-flex gap-1 text-xl flex-wrap">
                   <b>$509,34</b>
                   <span className="border px-1 flex items-center rounded-sm text-xs">
                     hello
@@ -67,7 +73,7 @@ export default function Overview() {
                   Total Revenue
                 </h3>
 
-                <span className="inline-flex gap-1 text-xl">
+                <span className="inline-flex gap-1 text-xl flex-wrap">
                   <b>$442,04</b>
                   <span className="border px-1 flex items-center rounded-sm text-xs">
                     hello
@@ -82,7 +88,7 @@ export default function Overview() {
                   Product Sold
                 </h3>
 
-                <span className="inline-flex gap-1 text-xl">
+                <span className="inline-flex gap-1 text-xl flex-wrap">
                   <b>781</b>
                   <span className="border px-1 flex items-center rounded-sm text-xs">
                     hello
@@ -97,7 +103,7 @@ export default function Overview() {
                   Customers
                 </h3>
 
-                <span className="inline-flex gap-1 text-xl">
+                <span className="inline-flex gap-1 text-xl flex-wrap">
                   <b>3,045</b>
                   <span className="border px-1 flex items-center rounded-sm text-xs">
                     hello
@@ -106,7 +112,7 @@ export default function Overview() {
               </div>
             </div>
 
-            <div className="p-2 bg-white rounded-lg flex flex-col gap-4  h-fit">
+            <div className="mt-2 p-2 bg-white rounded-lg flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold">Stats Overview</h3>
                 <Select>
@@ -123,10 +129,22 @@ export default function Overview() {
               {/* CHART */}
               <LineChartView />
             </div>
+
+            {/* RECENT TRANSACTIONS */}
+
+            <RecentTransactions />
           </div>
 
-          <div className="hidden w-1/5 xl:block rounded-sm p-2">Messages</div>
-          <div className="xl:w-1/5 w-2/5 rounded-sm p-2">Notifications</div>
+          <div className="border-red-600 mt-4 md:mt-0 gap-2 lg:grid grid-cols-1 xl:grid-cols-2 grid-rows-2 max-h-full">
+            <div className="hidden xl:block">
+              <TopCaregories />
+            </div>
+            <div>
+              <Activities />
+            </div>
+            <div className="hidden xl:block">hello</div>
+            <div className="">hello</div>
+          </div>
         </div>
       </main>
     </>

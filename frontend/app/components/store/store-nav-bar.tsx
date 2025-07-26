@@ -13,7 +13,7 @@ export default function StoreNavBar({
 
   return (
     <>
-      <nav className="bg-white px-2 flex justify-between items-center w-full">
+      <nav className="p-2 bg-white flex justify-between items-center md:rounded-lg w-full">
         <select
           id="select-store"
           name="select-store"
@@ -31,7 +31,7 @@ export default function StoreNavBar({
           smart nav here
         </h2>
 
-        <div className="p-2 flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <span className="hidden md:block">{user.email}</span>
           <div className="border w-10 h-10 rounded-full flex items-center justify-center uppercase cursor-pointer">
             ES

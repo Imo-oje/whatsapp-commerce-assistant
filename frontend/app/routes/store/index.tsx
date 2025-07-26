@@ -25,9 +25,9 @@ export default function Index() {
 
   return (
     <>
-      <div className="h-screen flex gap-1 bg-gray-200">
+      <div className="max-h-screen flex top-0 bottom-0 overflow-y-auto fixed bg-gray-200 w-full md:gap-2 md:pr-2">
         <StoreSideBar ref={sideBarRef} />
-        <div className="w-full flex gap-4 flex-col">
+        <div className="w-full flex flex-col h-full overflow-y-scroll">
           <StoreNavBar user={user} onMenuClick={handleOpenSideBar} />
           <Outlet context={user} />
         </div>
