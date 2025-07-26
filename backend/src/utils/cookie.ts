@@ -3,9 +3,11 @@ import { fiftenMinutesFromNow, thirtyDaysFromNow } from "./date";
 import { NODE_ENV } from "../constants/env";
 
 const defaults: CookieOptions = {
-  sameSite: NODE_ENV !== "production" ? "lax" : "none",
+  sameSite: "none",
+  //sameSite: NODE_ENV === "production" ? "none" : "lax",
   httpOnly: true,
-  secure: NODE_ENV === "production",
+  //secure: NODE_ENV === "production",
+  secure: true,
 };
 
 export const accessTokenCookieOptions = () => ({
